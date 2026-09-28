@@ -1,5 +1,7 @@
 package com.exemplo.fornecedoresservice.service;
 
+import com.exemplo.fornecedoresservice.dto.ProdutoDTO;
+import com.exemplo.fornecedoresservice.interfaces.ProdutoInterface;
 import com.exemplo.fornecedoresservice.model.Fornecedor;
 import com.exemplo.fornecedoresservice.repository.FornecedorRepository;
 import org.springframework.stereotype.Service;
@@ -15,9 +17,11 @@ import java.util.Optional;
 public class FornecedorService {
 
     private final FornecedorRepository fornecedorRepository;
+    private final ProdutoInterface produtoInterface;
 
-    public FornecedorService(FornecedorRepository fornecedorRepository) {
+    public FornecedorService(FornecedorRepository fornecedorRepository, ProdutoInterface produtoInterface) {
         this.fornecedorRepository = fornecedorRepository;
+        this.produtoInterface = produtoInterface;
     }
 
     public List<Fornecedor> listarTodos() {
@@ -30,5 +34,10 @@ public class FornecedorService {
 
     public Fornecedor salvar(Fornecedor fornecedor) {
         return fornecedorRepository.save(fornecedor);
+    }
+
+    // Chamada ao produtos-service via Feign
+    public List<ProdutoDTO> listarProdutos() {
+        return produtoInterface.listarTodos();
     }
 }
